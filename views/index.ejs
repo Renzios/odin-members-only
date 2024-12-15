@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Only</title>
+</head>
+<body>
+    <form action="/create" method="POST">
+        <label for="text">Text</label>
+        <textarea name="text" id="text"></textarea>
+        <button>Create</button>
+    </form>
+    <% messages.forEach(message => { %>
+        <% if (admin) { %>
+            <p><%= message.username %></p>
+            <form action="/<%= message.id %>/delete" method="POST"><button>Delete</button></form>
+        <% } %>
+        <p><%= message.text %></p>
+        <p><%= message.timestamp %></p>
+    <% }); %>
+    <a href="/logout">Logout</a>
+</body>
+</html>

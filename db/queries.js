@@ -39,8 +39,9 @@ module.exports = {
 
     readMessages: async () => {
         const query = `
-            SELECT *
-            FROM messages;
+            SELECT messages.*, users.username
+            FROM messages
+            JOIN users ON messages.user_id = users.id;
         `;
         const { rows } = await pool.query(query);
         return rows;

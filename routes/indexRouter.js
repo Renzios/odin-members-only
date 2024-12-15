@@ -3,17 +3,17 @@ const indexRouter = Router();
 
 const indexController = require("../controllers/indexController");
 
-indexRouter.get("/", indexController.getIndex);
+indexRouter.get("/", indexController.isAuthenticated, indexController.getIndex);
 
-indexRouter.get("/login", indexController.getLogin);
-indexRouter.post("/login", indexController.postLogin);
-
-indexRouter.get("/signup", indexController.getSignUp);
+indexRouter.get("/signup", indexController.isUnauthenticated, indexController.getSignUp);
 indexRouter.post("/signup", indexController.postSignUp);
 
-indexRouter.get("/logout", indexController.getLogout);
+indexRouter.get("/login", indexController.isUnauthenticated, indexController.getLogin);
+indexRouter.post("/login", indexController.postLogin);
 
-indexRouter.get("/create", indexController.getCreate);
+indexRouter.get("/logout", indexController.isAuthenticated, indexController.getLogout);
+
+indexRouter.get("/create", indexController.isAuthenticated, indexController.getCreate);
 indexRouter.post("/create", indexController.postCreate);
 
 indexRouter.post("/:id/delete", indexController.postDelete);
