@@ -1,49 +1,49 @@
 const pool = require("./pool");
 
 module.exports = {
-    createUser: async ({ firstName, lastName, username, password }) => {
+    createUser: async (username, password) => {
         const query = `
-            INSERT INTO users (first_name, last_name, username, password)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO users (username, password)
+            VALUES ($1, $2)
         `;
-        await pool.query(query, [firstName, lastName, username, password]);
+        await pool.query(query, [username, password]);
     },
 
-    updateMembershipStatus: async (id) => {
+    readUserByID: async (id) => {
         const query = `
-            UPDATE users
-            SET
-                membership_status = TRUE
+            SELECT *
+            FROM users
             WHERE id = $1
         `;
-        await pool.query(query, [id]);
+        const { rows } = await pool.query(query, [id]);
+        return rows[0];
     },
 
-    updateAdmin: async (id) => {
+    readUserByUsername: async (username) => {
         const query = `
-            UPDATE users
-            SET
-                admin = TRUE
-            WHERE id = $1
+            SELECT *
+            FROM users
+            WHERE username = $1
         `;
-        await pool.query(query, [id]);
+        const { rows } = await pool.query(query, [username]);
+        return rows[0];
     },
 
-    getMessages: async () => {
+    createMessage: async (userID, text) => {
+        const query = `
+            INSERT INTO messages (user_id, text)
+            VALUES ($1, $2)
+        `;
+        await pool.query(query, [userID, text]);
+    },
+
+    readMessages: async () => {
         const query = `
             SELECT *
             FROM messages;
         `;
         const { rows } = await pool.query(query);
         return rows;
-    },
-
-    createMessage: async (id, { title, text }) => {
-        const query = `
-            INSERT INTO messages (title, text, user_id)
-            VALUES ($1, $2, $3)
-        `;
-        await pool.query(query, [title, text, id]);
     },
 
     deleteMessage: async (id) => {
