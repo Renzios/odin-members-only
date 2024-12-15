@@ -9,15 +9,24 @@ module.exports = {
         await pool.query(query, [firstName, lastName, username, password]);
     },
 
-    updateUser: async (id, { membershipStatus, admin }) => {
+    updateMembershipStatus: async (id) => {
         const query = `
             UPDATE users
             SET
-                membership_status = $1,
-                admin = $2
-            WHERE id = $3
+                membership_status = TRUE
+            WHERE id = $1
         `;
-        await pool.query(query, [membershipStatus, admin, id]);
+        await pool.query(query, [id]);
+    },
+
+    updateAdmin: async (id) => {
+        const query = `
+            UPDATE users
+            SET
+                admin = TRUE
+            WHERE id = $1
+        `;
+        await pool.query(query, [id]);
     },
 
     getMessages: async () => {
